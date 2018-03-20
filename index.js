@@ -25,12 +25,12 @@ function loadEventsData() {
 }
 
 function writeFriendsData(friends) {
-  var rawNewFriends = JSON.stringify(friends);
+  var rawNewFriends = JSON.stringify(friends, null, 2);
   fs.writeFileSync(FRIENDS_PATH, rawNewFriends);
 }
 
 function writeEventsData(events) {
-  var rawNewEvents = JSON.stringify(events);
+  var rawNewEvents = JSON.stringify(events, null, 2);
   fs.writeFileSync(EVENTS_PATH, rawNewEvents);
 }
 
