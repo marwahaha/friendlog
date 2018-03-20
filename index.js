@@ -36,7 +36,7 @@ function writeEventsData(events) {
 
 // API
 function listFriends() {
-  var NEW_INDICATOR = "(NEW)     "; // spaces are a hack to align with iso dates
+  var NEW_INDICATOR = "(new)     "; // spaces are a hack to align with iso dates
 
 
   var events = loadEventsData();
@@ -51,7 +51,7 @@ function listFriends() {
     };
   });
   _.sortBy(nextEventByFriend, 'date').forEach(friend => {
-    console.log(friend.date + '\t' + friend.user);
+    console.log(friend.date + '  ' + friend.user);
   });
 }
 
