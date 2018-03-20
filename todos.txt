@@ -29,3 +29,4 @@ To spec out:
 * should we use a real database?
 * list all hangouts for a friend
 * nicknames ("kunal-marwaha" can also be addressed "kunal")
+* hangout with multiple people
