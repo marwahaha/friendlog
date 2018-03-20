@@ -17,3 +17,4 @@
 // TODO if you have no friends, print welcome and/or help message
 // TODO make scripts npm-accessible AND fl-accessible
 // TODO publish to npm
+// TODO tags on the friend objects (i.e. "frisbee", "music")
