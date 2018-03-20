@@ -16,3 +16,4 @@
 // TODO recommend saving data via private git repos or other means (in readme)
 // TODO if you have no friends, print welcome and/or help message
 // TODO make scripts npm-accessible AND fl-accessible
+// TODO publish to npm
