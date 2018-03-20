@@ -30,3 +30,4 @@ To spec out:
 * list all hangouts for a friend
 * nicknames ("kunal-marwaha" can also be addressed "kunal")
 * hangout with multiple people
+* "snooze" a person?
