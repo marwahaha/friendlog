@@ -36,6 +36,8 @@ function writeEventsData(events) {
 
 // API
 function listFriends() {
+  var NEW_INDICATOR = "(NEW)     ".padEnd(DATE_DISPLAY_FORMAT);
+
   var events = loadEventsData();
   var friends = loadFriendsData();
 
@@ -44,11 +46,11 @@ function listFriends() {
     var lastEvent = _.sortBy(eventsByFriend[friend.user])[0];
     return {
       user: friend.user,
-      date: lastEvent ? moment(lastEvent.date).add(friend.freq, 'days').format(DATE_DISPLAY_FORMAT) : "(NEW)"
+      date: lastEvent ? moment(lastEvent.date).add(friend.freq, 'days').format(DATE_DISPLAY_FORMAT) : NEW_INDICATOR
     };
   });
   _.sortBy(nextEventByFriend, 'date').forEach(friend => {
-    console.log(friend.user + '\t' + friend.date);
+    console.log(friend.date + '  ' + friend.user);
   });
 }
 
