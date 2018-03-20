@@ -1,0 +1,14 @@
+{
+  "name": "fl",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kunal Marwaha, Pandu Rendradjaja",
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.21.0"
+  },
+  "description": ""
+}
