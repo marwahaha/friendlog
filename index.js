@@ -1,9 +1,12 @@
 'use strict';
 var moment = require('moment');
+var _ = require('lodash');
 const fs = require('fs');
 
 var FRIENDS_PATH = "data/friends.json"; // TODO need path here
 var EVENTS_PATH = "data/events.json"; // TODO need path here
+
+var today = moment().startOf('day');
 
 // Data transfer
 function loadFriendsData() {
@@ -28,8 +31,27 @@ function writeEventsData(events) {
 
 // API
 function listFriends() {
+  var events = loadEventsData();
   var friends = loadFriendsData();
-  console.log(friends);
+
+  var eventsByFriend = _.groupBy(events, 'user');
+  var nextEventByFriend = _.map(friends, friend => {
+    var lastEvent = _.sortBy(eventsByFriend[friend.name])[0];
+    if (lastEvent) {
+      return {
+        user: friend.name,
+        date: moment(lastEvent.date).add(friend.freq, 'days')
+      };
+    } else {
+      return {
+        user: friend.name,
+        date: today
+      };
+    }
+  });
+  _.sortBy(nextEventByFriend, 'date').forEach(friend => {
+    console.log(friend.user + '\t' + friend.date.format('MM-DD'));
+  });
 }
 
 function addUser(user, days) {
@@ -39,19 +61,16 @@ function addUser(user, days) {
     days = DEFAULT_NUM_DAYS;
   }
   var friends = loadFriendsData();
-  friends.push({"name": user, "days": days});
+  friends.push({"name": user, "freq": days});
   writeFriendsData(friends);
 }
 
 function addEvent(user, date, memo) {
   // TODO handle error cases from function
   var friends = loadFriendsData();
-  if (!friends[user]) {
-    // TODO cause an error
-    return;
-  }
+  // TODO check if friend exists?
   var events = loadEventsData();
-  iso_date = moment(date).format("YYYY-MM-DD");
+  var iso_date = moment(date).format("YYYY-MM-DD");
   events.push({"user": user, "date": iso_date, "memo": memo});
   writeEventsData(events);
 }

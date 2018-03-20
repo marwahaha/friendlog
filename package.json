@@ -8,6 +8,7 @@
   "author": "Kunal Marwaha, Pandu Rendradjaja",
   "license": "ISC",
   "dependencies": {
+    "lodash": "^4.17.5",
     "moment": "^2.21.0"
   },
   "description": ""
