@@ -25,3 +25,9 @@ To spec out:
 * tags on the friend objects (i.e. "frisbee", "music")
 * recommend saving data via private git repos or other means (in readme)
 * calendar view of history 
+* rename a user and migrate all their data to the new username (should we use user ids instead of usernames then?)
+* should we use a real database?
+* list all hangouts for a friend
+* nicknames ("kunal-marwaha" can also be addressed "kunal")
+* hangout with multiple people
+* "snooze" a person?
