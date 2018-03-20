@@ -36,8 +36,7 @@ function writeEventsData(events) {
 
 // API
 function listFriends() {
-  var NEW_INDICATOR = "(new)     "; // spaces are a hack to align with iso dates
-
+  var NEW_INDICATOR = "(NEW)     ".padEnd(DATE_DISPLAY_FORMAT);
 
   var events = loadEventsData();
   var friends = loadFriendsData();
