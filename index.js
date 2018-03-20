@@ -3,10 +3,15 @@ var moment = require('moment');
 var _ = require('lodash');
 const fs = require('fs');
 
-var FRIENDS_PATH = "data/friends.json"; // TODO need path here
-var EVENTS_PATH = "data/events.json"; // TODO need path here
+// Constants
+var DIRECTORY = process.argv[1].substring(0, process.argv[1].lastIndexOf('/') + 1);
+var FRIENDS_PATH = DIRECTORY + "data/friends.json";
+var EVENTS_PATH = DIRECTORY + "data/events.json";
 
-var today = moment().startOf('day');
+var DATE_STORAGE_FORMAT = "YYYY-MM-DD";
+var DATE_DISPLAY_FORMAT = "YYYY-MM-DD";
+var TODAY = moment().startOf('day');
+var DEFAULT_NUM_DAYS = 10;
 
 // Data transfer
 function loadFriendsData() {
@@ -36,32 +41,28 @@ function listFriends() {
 
   var eventsByFriend = _.groupBy(events, 'user');
   var nextEventByFriend = _.map(friends, friend => {
-    var lastEvent = _.sortBy(eventsByFriend[friend.name])[0];
-    if (lastEvent) {
-      return {
-        user: friend.name,
-        date: moment(lastEvent.date).add(friend.freq, 'days')
-      };
-    } else {
-      return {
-        user: friend.name,
-        date: today
-      };
-    }
+    var lastEvent = _.sortBy(eventsByFriend[friend.user])[0];
+    return {
+      user: friend.user,
+      date: lastEvent ? moment(lastEvent.date).add(friend.freq, 'days').format(DATE_DISPLAY_FORMAT) : "(NEW)"
+    };
   });
   _.sortBy(nextEventByFriend, 'date').forEach(friend => {
-    console.log(friend.user + '\t' + friend.date.format('MM-DD'));
+    console.log(friend.user + '\t' + friend.date);
   });
 }
 
 function addUser(user, days) {
-  // TODO Handle duplicate names
+  var friends = loadFriendsData();
+  if (0 !== _.filter(friends, friend => friend.user === user).length) {
+    console.log("Friend " + user + " already exists.")
+    return;
+  }
   days = +days;
   if (!days || days <= 0) {
     days = DEFAULT_NUM_DAYS;
   }
-  var friends = loadFriendsData();
-  friends.push({"name": user, "freq": days});
+  friends.push({"user": user, "freq": days});
   writeFriendsData(friends);
 }
 
@@ -70,7 +71,8 @@ function addEvent(user, date, memo) {
   var friends = loadFriendsData();
   // TODO check if friend exists?
   var events = loadEventsData();
-  var iso_date = moment(date).format("YYYY-MM-DD");
+  var iso_date = moment(date).format(DATE_STORAGE_FORMAT);
+  // TODO don't default to today!
   events.push({"user": user, "date": iso_date, "memo": memo});
   writeEventsData(events);
 }
@@ -80,7 +82,6 @@ function showHelp() {
 
 // Default behavior
 var callDefault = listFriends;
-var DEFAULT_NUM_DAYS = 10;
 
 // figure out which command you're running
 function main() {
@@ -89,9 +90,9 @@ function main() {
     callDefault();
   } else if (2 === args.length && 'add' === args[0]) {
     addUser(args[1]);
-  } else if (3 === args.length && 'add' === args[0]) {
+  } else if (3 === args.length && 'add' === args[0]) { // TODO add shortcut for today / yesterday
     addUser(args[1], args[2]);
-  } else if (4 === args.length && 'hang' === args[0]) {
+  } else if (4 === args.length && 'hangout' === args[0]) {
     addEvent(args[1], args[2], args[3]);
   } else {
     showHelp();

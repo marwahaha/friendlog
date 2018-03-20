@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "reset": "echo '[]' > data/friends.json; echo '[]' > data/events.json"
   },
   "author": "Kunal Marwaha, Pandu Rendradjaja",
   "license": "ISC",
