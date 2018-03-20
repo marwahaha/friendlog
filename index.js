@@ -67,12 +67,9 @@ function addUser(user, days) {
 }
 
 function addEvent(user, date, memo) {
-  // TODO handle error cases from function
   var friends = loadFriendsData();
-  // TODO check if friend exists?
   var events = loadEventsData();
   var iso_date = moment(date).format(DATE_STORAGE_FORMAT);
-  // TODO don't default to today!
   events.push({"user": user, "date": iso_date, "memo": memo});
   writeEventsData(events);
 }
@@ -90,7 +87,7 @@ function main() {
     callDefault();
   } else if (2 === args.length && 'add' === args[0]) {
     addUser(args[1]);
-  } else if (3 === args.length && 'add' === args[0]) { // TODO add shortcut for today / yesterday
+  } else if (3 === args.length && 'add' === args[0]) {
     addUser(args[1], args[2]);
   } else if (4 === args.length && 'hangout' === args[0]) {
     addEvent(args[1], args[2], args[3]);

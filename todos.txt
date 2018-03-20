@@ -1,0 +1,16 @@
+// TODO Version database
+// TODO add shortcut for today / yesterday
+// TODO handle error cases from all functions (check parameters)
+// TODO be verbose when adding data 
+// TODO check if friend exists when adding event (perhaps: prompt first, then create)
+// TODO make help
+// TODO make readme
+// TODO split into multiple files
+// TODO add linter
+// TODO add script to add aliasing (or put example aliases in readme)
+// TODO handle other date formats (gracefully!)
+// TODO script to print all history, print frequency, print users 
+// TODO edit frequency
+// TODO calendar view of history 
+// TODO config file to store various constants
+// TODO recommend saving data via private git repos or other means (in readme)
