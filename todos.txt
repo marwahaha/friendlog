@@ -28,3 +28,4 @@ To spec out:
 * rename a user and migrate all their data to the new username (should we use user ids instead of usernames then?)
 * should we use a real database?
 * list all hangouts for a friend
+* nicknames ("kunal-marwaha" can also be addressed "kunal")
