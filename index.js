@@ -36,7 +36,7 @@ function writeEventsData(events) {
 
 // API
 function listFriends() {
-  var NEW_INDICATOR = "(NEW)     ".padEnd(DATE_DISPLAY_FORMAT);
+  var NEW_INDICATOR = "(NEW)     ";
 
   var events = loadEventsData();
   var friends = loadFriendsData();
