@@ -7,7 +7,6 @@
 * add linter
 * add script to add aliasing (or put example aliases in readme)
 * handle other date formats (gracefully!)
-* script to print history
 * config file to store various constants
 * if you have no friends, print welcome and/or help message
 * make scripts npm-accessible AND fl-accessible
