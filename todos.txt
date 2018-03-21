@@ -11,7 +11,6 @@
 * config file to store various constants
 * if you have no friends, print welcome and/or help message
 * make scripts npm-accessible AND fl-accessible
-* publish to npm
 * tab-complete friends
 
 To spec out:

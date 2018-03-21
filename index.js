@@ -50,7 +50,7 @@ function convertDaysToNumber(days) {
 
 // Public API
 function listFriends() {
-  var NEW_INDICATOR = "(NEW)     ";
+  var NEW_INDICATOR = "new       ";
 
   var events = loadEventsData();
   var friends = loadFriendsData();
