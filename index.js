@@ -41,9 +41,9 @@ function getFriendByUser(friends, user) {
 }
 
 function convertDaysToNumber(days) {
-  days = +days;
-  if (!days || days <= 0) {
-    days = DEFAULT_NUM_DAYS;
+  var numDays = +days;
+  if (!numDays || numDays <= 0) {
+    fail("Please use a positive number of days (specified '" + days + "')");
   }
   return days;
 }
@@ -72,39 +72,47 @@ function addUser(user, days) {
   var friends = loadFriendsData();
   var myFriend = getFriendByUser(friends, user)[0];
   if (!!myFriend) {
-    return console.log("Friend " + user + " already exists.")
+    fail("Friend " + user + " already exists")
   }
-  var numDays = convertDaysToNumber(days);
+  var numDays = days !== undefined ? convertDaysToNumber(days) : DEFAULT_NUM_DAYS;
   friends.push({"user": user, "freq": numDays});
   writeFriendsData(friends);
+  console.info("Added friend " + user);
 }
 
 function editUser(user, days) {
   var friends = loadFriendsData();
   var myFriend = getFriendByUser(friends, user)[0];
   if (!myFriend) {
-    return console.log("Friend " + user + " does not exist.")
+    fail("Friend " + user + " does not exist")
   }
   var numDays = convertDaysToNumber(days);
+  var oldNumDays = myFriend.freq;
   myFriend.freq = numDays;
   writeFriendsData(friends);
+  console.info("Friend " + user + " now at " + numDays + " days (was " + oldNumDays + ")");
 }
 
 function listUser(user) {
   var friends = loadFriendsData();
   var myFriend = getFriendByUser(friends, user)[0];
   if (!myFriend) {
-    return console.log("Friend " + user + " does not exist.")
+    fail("Friend " + user + " does not exist");
   }
   console.log(myFriend);
 }
 
 function addEvent(user, date, memo) {
   var friends = loadFriendsData();
+  var myFriend = getFriendByUser(friends, user)[0];
+  if (!myFriend) {
+    fail("Friend " + user + " does not exist");
+  }
   var events = loadEventsData();
   var isoDate = parseDate(date).format(DATE_STORAGE_FORMAT);
   events.push({"user": user, "date": isoDate, "memo": memo});
   writeEventsData(events);
+  console.info("Added event '" + memo + "' on " + isoDate + " with " + user);
 }
 
 /**
@@ -119,7 +127,7 @@ function parseDate(s) {
   } else {
     date = moment(date, DATE_PARSE_FORMAT, true);
     if (!date.isValid()) {
-      fail('Invalid date');
+      fail("Invalid date (specified '" + s + "')");
     }
   }
   return date.startOf('day');
