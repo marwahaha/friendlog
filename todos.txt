@@ -2,7 +2,6 @@
 * handle error cases from all functions (check parameters)
 * be verbose when adding data 
 * check if friend exists when adding event (perhaps: prompt first, then create)
-* make help
 * split into multiple files
 * add linter
 * add script to add aliasing (or put example aliases in readme)

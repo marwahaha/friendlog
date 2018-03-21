@@ -126,6 +126,12 @@ function parseDate(s) {
 }
 
 function showHelp() {
+  console.log("welcome to friendlog :-)")
+  console.log("   add [friend] [freq=10] " + "Adds [friend]. Events expected every [freq] days")
+  console.log("   list                   " + "Lists each friend and their next expected event")
+  console.log("   list [friend]          " + "View info about [friend]")
+  console.log("   edit [friend] [freq]   " + "Edits [friend]'s expected [freq]")
+  console.log("   hangout [f] [d] [m]    " + "Records event with [friend] on [date] with [memo]")
 }
 
 function fail(msg) {
@@ -133,7 +139,7 @@ function fail(msg) {
 }
 
 // Default behavior
-var callDefault = listFriends;
+var callDefault = showHelp;
 
 // figure out which command you're running
 function main() {
