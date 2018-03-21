@@ -50,14 +50,14 @@ function convertDaysToNumber(days) {
 
 // Public API
 function listFriends() {
-  var NEW_INDICATOR = "(NEW)     ";
+  var NEW_INDICATOR = "new       ";
 
   var events = loadEventsData();
   var friends = loadFriendsData();
 
   var eventsByFriend = _.groupBy(events, 'user');
   var nextEventByFriend = _.map(friends, friend => {
-    var lastEvent = _.sortBy(eventsByFriend[friend.user])[0];
+    var lastEvent = _.sortBy(eventsByFriend[friend.user], 'date').reverse()[0];
     return {
       user: friend.user,
       date: lastEvent ? moment(lastEvent.date).add(friend.freq, 'days').format(DATE_DISPLAY_FORMAT) : NEW_INDICATOR
@@ -134,6 +134,12 @@ function parseDate(s) {
 }
 
 function showHelp() {
+  console.log("welcome to friendlog :-)")
+  console.log("   add [friend] [freq=10] " + "Adds [friend]. Events expected every [freq] days")
+  console.log("   list                   " + "Lists each friend and their next expected event")
+  console.log("   list [friend]          " + "View info about [friend]")
+  console.log("   edit [friend] [freq]   " + "Edits [friend]'s expected [freq]")
+  console.log("   hangout [f] [d] [m]    " + "Records event with [friend] on [date] with [memo]")
 }
 
 function fail(msg) {
@@ -141,7 +147,7 @@ function fail(msg) {
 }
 
 // Default behavior
-var callDefault = listFriends;
+var callDefault = showHelp;
 
 // figure out which command you're running
 function main() {

@@ -1,6 +1,5 @@
 * Version database
 * if adding event for non-existent user, prompt to create user
-* make help
 * split into multiple files
 * add linter
 * add script to add aliasing (or put example aliases in readme)
@@ -9,7 +8,6 @@
 * config file to store various constants
 * if you have no friends, print welcome and/or help message
 * make scripts npm-accessible AND fl-accessible
-* publish to npm
 * tab-complete friends
 
 To spec out:
