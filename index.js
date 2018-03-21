@@ -49,7 +49,7 @@ function convertDaysToNumber(days) {
 
 // Public API
 function listFriends() {
-  var NEW_INDICATOR = "(NEW)     ".padEnd(DATE_DISPLAY_FORMAT);
+  var NEW_INDICATOR = "new       ";
 
   var events = loadEventsData();
   var friends = loadFriendsData();

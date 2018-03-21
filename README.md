@@ -22,5 +22,19 @@ See who you should hang out with next and when:
 ```
 2018-01-06  alice
 2018-02-16  kunal
-(new)       bob
+new         bob
 ```
+
+You will need to set up an alias to get things working:
+```
+git clone https://github.com/marwahaha/friendlog.git
+cd friendlog
+alias friendlog="node $(pwd)/index.js"
+```
+You may prefer these aliases:
+```
+alias fl="friendlog"
+alias flh="fl hangout"
+```
+
+Add these to your profile (i.e. ~/.bash_profile)
