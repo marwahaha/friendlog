@@ -57,7 +57,8 @@ function listFriends() {
 
   var eventsByFriend = _.groupBy(events, 'user');
   var nextEventByFriend = _.map(friends, friend => {
-    var lastEvent = _.sortBy(eventsByFriend[friend.user])[0];
+    var sortedHistory = _.sortBy(eventsByFriend[friend.user], 'date');
+    var lastEvent = sortedHistory[sortedHistory.length - 1];
     return {
       user: friend.user,
       date: lastEvent ? moment(lastEvent.date).add(friend.freq, 'days').format(DATE_DISPLAY_FORMAT) : NEW_INDICATOR
