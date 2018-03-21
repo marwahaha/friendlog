@@ -34,7 +34,20 @@ function writeEventsData(events) {
   fs.writeFileSync(EVENTS_PATH, rawNewEvents);
 }
 
-// API
+// Helper functions
+function getFriendByUser(friends, user) {
+  return _.filter(friends, friend => friend.user === user);
+}
+
+function convertDaysToNumber(days) {
+  days = +days;
+  if (!days || days <= 0) {
+    days = DEFAULT_NUM_DAYS;
+  }
+  return days;
+}
+
+// Public API
 function listFriends() {
   var NEW_INDICATOR = "(NEW)     ".padEnd(DATE_DISPLAY_FORMAT);
 
@@ -56,23 +69,40 @@ function listFriends() {
 
 function addUser(user, days) {
   var friends = loadFriendsData();
-  if (0 !== _.filter(friends, friend => friend.user === user).length) {
-    console.log("Friend " + user + " already exists.")
-    return;
+  var myFriend = getFriendByUser(friends, user)[0];
+  if (!!myFriend) {
+    return console.log("Friend " + user + " already exists.")
   }
-  days = +days;
-  if (!days || days <= 0) {
-    days = DEFAULT_NUM_DAYS;
-  }
-  friends.push({"user": user, "freq": days});
+  var numDays = convertDaysToNumber(days);
+  friends.push({"user": user, "freq": numDays});
   writeFriendsData(friends);
+}
+
+function editUser(user, days) {
+  var friends = loadFriendsData();
+  var myFriend = getFriendByUser(friends, user)[0];
+  if (!myFriend) {
+    return console.log("Friend " + user + " does not exist.")
+  }
+  var numDays = convertDaysToNumber(days);
+  myFriend.freq = numDays;
+  writeFriendsData(friends);
+}
+
+function listUser(user) {
+  var friends = loadFriendsData();
+  var myFriend = getFriendByUser(friends, user)[0];
+  if (!myFriend) {
+    return console.log("Friend " + user + " does not exist.")
+  }
+  console.log(myFriend);
 }
 
 function addEvent(user, date, memo) {
   var friends = loadFriendsData();
   var events = loadEventsData();
-  var iso_date = moment(date).format(DATE_STORAGE_FORMAT);
-  events.push({"user": user, "date": iso_date, "memo": memo});
+  var isoDate = moment(date).format(DATE_STORAGE_FORMAT);
+  events.push({"user": user, "date": isoDate, "memo": memo});
   writeEventsData(events);
 }
 
@@ -91,6 +121,12 @@ function main() {
     addUser(args[1]);
   } else if (3 === args.length && 'add' === args[0]) {
     addUser(args[1], args[2]);
+  } else if (1 === args.length && 'list' === args[0]) {
+    listFriends();
+  } else if (2 === args.length && 'list' === args[0]) {
+    listUser(args[1]);
+  } else if (3 === args.length && 'edit' === args[0]) {
+    editUser(args[1], args[2]);
   } else if (4 === args.length && 'hangout' === args[0]) {
     addEvent(args[1], args[2], args[3]);
   } else {
