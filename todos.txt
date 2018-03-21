@@ -1,7 +1,5 @@
 * Version database
-* handle error cases from all functions (check parameters)
-* be verbose when adding data 
-* check if friend exists when adding event (perhaps: prompt first, then create)
+* if adding event for non-existent user, prompt to create user
 * make help
 * split into multiple files
 * add linter
@@ -15,6 +13,7 @@
 * tab-complete friends
 
 To spec out:
+* when listing or editing non-existent user, should we prompt to create user?
 * mark friends as "scheduled hangout" (to spec)
 * facebook integration (to populate names?)
 * types of hangouts (granularity? phone call vs 1/1 hangout. to spec out)
