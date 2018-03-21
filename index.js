@@ -132,6 +132,34 @@ function fail(msg) {
   throw msg;
 }
 
+function showHistory(user) {
+  var events = loadEventsData();
+  var eventsByFriend = _.groupBy(events, 'user');
+  Object.keys(eventsByFriend).forEach(friend => {
+    if (!user || user === friend) {
+      prettyPrintFriendHeader2(friend);
+      _.sortBy(eventsByFriend[friend], 'date').reverse().map(prettyPrintEvent);
+    }
+  })
+}
+
+function prettyPrintFriendHeader2(friend) {
+  var LENGTH = 30;
+  console.log("+".repeat(LENGTH));
+  console.log(friend);
+  console.log("-".repeat(LENGTH));
+}
+
+function prettyPrintFriendHeader(friend) {
+  console.log();
+  console.log(friend);
+  console.log("-".repeat(friend.length));
+}
+
+function prettyPrintEvent(event) {
+  console.log(event.date + '  ' + event.memo);
+}
+
 // Default behavior
 var callDefault = listFriends;
 
@@ -150,6 +178,10 @@ function main() {
     listUser(args[1]);
   } else if (3 === args.length && 'edit' === args[0]) {
     editUser(args[1], args[2]);
+  } else if (1 === args.length && 'history' === args[0]) {
+    showHistory();
+    } else if (2 === args.length && 'history' === args[0]) {
+    showHistory(args[1]);
   } else if (4 === args.length && 'hangout' === args[0]) {
     addEvent(args[1], args[2], args[3]);
   } else {
