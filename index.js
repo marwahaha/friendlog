@@ -9,6 +9,7 @@ var FRIENDS_PATH = DIRECTORY + "data/friends.json";
 var EVENTS_PATH = DIRECTORY + "data/events.json";
 
 var DATE_STORAGE_FORMAT = "YYYY-MM-DD";
+var DATE_PARSE_FORMAT = "YYYY-MM-DD";
 var DATE_DISPLAY_FORMAT = "YYYY-MM-DD";
 var TODAY = moment().startOf('day');
 var DEFAULT_NUM_DAYS = 10;
@@ -101,12 +102,34 @@ function listUser(user) {
 function addEvent(user, date, memo) {
   var friends = loadFriendsData();
   var events = loadEventsData();
-  var isoDate = moment(date).format(DATE_STORAGE_FORMAT);
+  var isoDate = parseDate(date).format(DATE_STORAGE_FORMAT);
   events.push({"user": user, "date": isoDate, "memo": memo});
   writeEventsData(events);
 }
 
+/**
+ * Returns a Moment.
+ */
+function parseDate(s) {
+  var date;
+  if (s === 'today') {
+    date = moment();
+  } else if (s === 'yesterday' || s === 'yday') {
+    date = moment().subtract(1, 'days');
+  } else {
+    date = moment(date, DATE_PARSE_FORMAT, true);
+    if (!date.isValid()) {
+      fail('Invalid date');
+    }
+  }
+  return date.startOf('day');
+}
+
 function showHelp() {
+}
+
+function fail(msg) {
+  throw msg;
 }
 
 // Default behavior

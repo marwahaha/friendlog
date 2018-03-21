@@ -1,5 +1,4 @@
 * Version database
-* add shortcut for today / yesterday
 * handle error cases from all functions (check parameters)
 * be verbose when adding data 
 * check if friend exists when adding event (perhaps: prompt first, then create)
