@@ -102,6 +102,10 @@ function listUser(user) {
 function addEvent(user, date, memo) {
   var friends = loadFriendsData();
   var events = loadEventsData();
+  var myFriend = getFriendByUser(friends, user)[0];
+  if (!myFriend) {
+    return console.log("Friend " + user + " does not exist.")
+  }
   var isoDate = parseDate(date).format(DATE_STORAGE_FORMAT);
   events.push({"user": user, "date": isoDate, "memo": memo});
   writeEventsData(events);
