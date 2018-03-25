@@ -7,11 +7,14 @@ const fs = require('fs');
 var DIRECTORY = process.argv[1].substring(0, process.argv[1].lastIndexOf('/') + 1);
 var FRIENDS_PATH = DIRECTORY + "data/friends.json";
 var EVENTS_PATH = DIRECTORY + "data/events.json";
+var CONFIG_PATH = DIRECTORY + "config.json";
 
 var DATE_STORAGE_FORMAT = "YYYY-MM-DD";
 var DATE_DISPLAY_FORMAT = "YYYY-MM-DD";
 var TODAY = moment().startOf('day');
 var DEFAULT_NUM_DAYS = 10;
+
+var config = loadConfigData();
 
 // Data transfer
 function loadFriendsData() {
@@ -25,13 +28,30 @@ function loadEventsData() {
 }
 
 function writeFriendsData(friends) {
-  var rawNewFriends = JSON.stringify(friends, null, 2);
+  var rawNewFriends = stringify(friends);
   fs.writeFileSync(FRIENDS_PATH, rawNewFriends);
 }
 
 function writeEventsData(events) {
-  var rawNewEvents = JSON.stringify(events, null, 2);
+  var rawNewEvents = stringify(events);
   fs.writeFileSync(EVENTS_PATH, rawNewEvents);
+}
+
+function stringify(jsonObject) {
+  if (config.prettyPrintJson) {
+    return JSON.stringify(jsonObject, null, 2);
+  } else {
+    return JSON.stringify(jsonObject);
+  }
+}
+
+function loadConfigData() {
+  try {
+    var rawConfig = fs.readFileSync(CONFIG_PATH);
+    return JSON.parse(rawConfig);
+  } catch (err) {
+    return {};
+  }
 }
 
 // API
