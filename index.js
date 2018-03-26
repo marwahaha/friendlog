@@ -124,6 +124,8 @@ function parseDate(s) {
     date = moment();
   } else if (s === 'yesterday' || s === 'yday') {
     date = moment().subtract(1, 'days');
+  } else if (parseWeekday(s)) {
+    date = parseWeekday(s);
   } else {
     date = moment(date, DATE_PARSE_FORMAT, true);
     if (!date.isValid()) {
@@ -131,6 +133,25 @@ function parseDate(s) {
     }
   }
   return date.startOf('day');
+}
+
+function parseWeekday(s) {
+  const weekdays = [
+    ['sunday',    'sun'],
+    ['monday',    'mon'],
+    ['tuesday',   'tue'],
+    ['wednesday', 'wed'],
+    ['thursday',  'thu'],
+    ['friday',    'fri'],
+    ['saturday',  'sat'],
+  ];
+  for (let i = 1; i <= 7; i++) {
+    const d = moment().startOf('day').subtract(i, 'days');
+    if (weekdays[d.day()].indexOf(s) !== -1) {
+      return d;
+    }
+  }
+  return false;
 }
 
 function showHelp() {
