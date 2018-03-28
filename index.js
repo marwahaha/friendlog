@@ -57,7 +57,35 @@ function loadConfigData() {
 
 // Helper functions
 function getFriendByUser(friends, user) {
-  return _.filter(friends, friend => friend.user === user);
+  const matches = _.filter(friends, friend => friend.user === user);
+  if (matches.length === 0) {
+    return false;
+  }
+  return matches[0];
+}
+
+// TODO this is pretty opinionated.
+// if you don't use - as a separator, it's useless
+// if you have a friend named foo and another named foo-bar,
+//   searching for 'foo' will fail as ambiguous
+function getFriendByUserFuzzy(friends, user) {
+  const matches = _(friends)
+      .flatMap(friend =>
+        _.map(friend.user.split('-'), partialName => ({
+          friend: friend,
+          partialName: partialName })))
+      .filter(x => x.partialName === user)
+      .value();
+  if (matches.length === 0) {
+    fail("Friend " + user + " does not exist")
+  } else if (matches.length > 1) {
+    fail("Multiple friends found: " +
+        _.map(matches, 'user').join(', '));
+  }
+  return {
+    friend: matches[0],
+    actualUsername: matches[0].user
+  };
 }
 
 function convertDaysToNumber(days) {
@@ -90,7 +118,7 @@ function listFriends() {
 
 function addUser(user, days) {
   var friends = loadFriendsData();
-  var myFriend = getFriendByUser(friends, user)[0];
+  var myFriend = getFriendByUser(friends, user);
   if (!!myFriend) {
     fail("Friend " + user + " already exists")
   }
@@ -102,7 +130,9 @@ function addUser(user, days) {
 
 function editUser(user, days) {
   var friends = loadFriendsData();
-  var myFriend = getFriendByUser(friends, user)[0];
+  const temp = getFriendByUserFuzzy(friends, user);
+  let myFriend = temp.friend;
+  user = temp.actualUsername;
   if (!myFriend) {
     fail("Friend " + user + " does not exist")
   }
@@ -115,7 +145,9 @@ function editUser(user, days) {
 
 function listUser(user) {
   var friends = loadFriendsData();
-  var myFriend = getFriendByUser(friends, user)[0];
+  const temp = getFriendByUserFuzzy(friends, user);
+  let myFriend = temp.friend;
+  user = temp.actualUsername;
   if (!myFriend) {
     fail("Friend " + user + " does not exist");
   }
@@ -124,7 +156,9 @@ function listUser(user) {
 
 function addEvent(user, date, memo) {
   var friends = loadFriendsData();
-  var myFriend = getFriendByUser(friends, user)[0];
+  const temp = getFriendByUserFuzzy(friends, user);
+  let myFriend = temp.friend;
+  user = temp.actualUsername;
   if (!myFriend) {
     fail("Friend " + user + " does not exist");
   }
@@ -189,7 +223,11 @@ function fail(msg) {
 
 function showHistory(user) {
   var events = loadEventsData();
+  var friends = loadFriendsData();
   var eventsByFriend = _.groupBy(events, 'user');
+  if (user) {
+    user = getFriendByUserFuzzy(friends, user).actualUsername;
+  }
   Object.keys(eventsByFriend).forEach(friend => {
     if (!user || user === friend) {
       prettyPrintFriendHeader2(friend);
