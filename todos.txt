@@ -1,7 +1,6 @@
 * Version database
 * if adding event for non-existent user, prompt to create user
 * split into multiple files
-* add linter
 * add script to add aliasing (or put example aliases in readme)
 * handle other date formats (gracefully!)
 * make scripts npm-accessible AND fl-accessible
