@@ -181,6 +181,7 @@ function showHelp() {
   console.log("   list [friend]          " + "View info about [friend]")
   console.log("   edit [friend] [freq]   " + "Edits [friend]'s expected [freq]")
   console.log("   hangout [f] [d] [m]    " + "Records event with [friend] on [date] with [memo]")
+  console.log("   history [?friend]      " + "See history of all friends or specific [friend]")
 }
 
 function fail(msg) {
@@ -190,23 +191,16 @@ function fail(msg) {
 function showHistory(user) {
   var events = loadEventsData();
   var eventsByFriend = _.groupBy(events, 'user');
-  Object.keys(eventsByFriend).forEach(friend => {
+  Object.keys(eventsByFriend).sort().forEach(friend => {
     if (!user || user === friend) {
-      prettyPrintFriendHeader2(friend);
+      prettyPrintFriendHeader(friend);
       _.sortBy(eventsByFriend[friend], 'date').reverse().map(prettyPrintEvent);
+      console.log();
     }
   })
 }
 
-function prettyPrintFriendHeader2(friend) {
-  var LENGTH = 30;
-  console.log("+".repeat(LENGTH));
-  console.log(friend);
-  console.log("-".repeat(LENGTH));
-}
-
 function prettyPrintFriendHeader(friend) {
-  console.log();
   console.log(friend);
   console.log("-".repeat(friend.length));
 }
