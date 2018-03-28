@@ -2,6 +2,7 @@
 var moment = require("moment");
 var _ = require("lodash");
 var fs = require("fs");
+var rl = require("readline");
 
 // Constants
 var DIRECTORY = process.argv[1].substring(0, process.argv[1].lastIndexOf("/") + 1);
@@ -15,6 +16,7 @@ var DATE_DISPLAY_FORMAT = "YYYY-MM-DD";
 var TODAY = moment().startOf("day");
 var DEFAULT_NUM_DAYS = 10;
 
+// Config
 var config = loadConfigData();
 
 // Data transfer
@@ -55,83 +57,27 @@ function loadConfigData() {
 }
 
 // Helper functions
+function ask(question, callback) {
+  var r = rl.createInterface({
+    input: process.stdin,
+    output: process.stdout});
+  r.question(question + "\n", function(answer) {
+    r.close();
+    callback(answer);
+  });
+}
+
 function getFriendByName(friends, name) {
   return _.filter(friends, friend => friend.name === name);
 }
 
+// Date-related helpers
 function convertDaysToNumber(days) {
   var numDays = +days;
   if (!numDays || numDays <= 0) {
     fail("Please use a positive number of days (specified '" + days + "')");
   }
   return days;
-}
-
-// Public API
-function listFriends() {
-  var NEW_INDICATOR = "new       ";
-
-  var events = loadEventsData();
-  var friends = loadFriendsData();
-
-  var eventsByFriend = _.groupBy(events, "name");
-  var nextEventByFriend = _.map(friends, friend => {
-    var lastEvent = _.sortBy(eventsByFriend[friend.name], "date").reverse()[0];
-    return {
-      name: friend.name,
-      date: lastEvent ? moment(lastEvent.date).add(friend.interval, "days").format(DATE_DISPLAY_FORMAT) : NEW_INDICATOR
-    };
-  });
-  _.sortBy(nextEventByFriend, "date").forEach(friend => {
-    console.log(friend.date + "  " + friend.name);
-  });
-}
-
-function addFriend(name, days) {
-  var friends = loadFriendsData();
-  var myFriend = getFriendByName(friends, name)[0];
-  if (myFriend) {
-    fail("Friend " + name + " already exists");
-  }
-  var numDays = days !== undefined ? convertDaysToNumber(days) : DEFAULT_NUM_DAYS;
-  friends.push({"name": name, "interval": numDays});
-  writeFriendsData(friends);
-  console.info("Added friend " + name);
-}
-
-function editFriend(name, days) {
-  var friends = loadFriendsData();
-  var myFriend = getFriendByName(friends, name)[0];
-  if (!myFriend) {
-    fail("Friend " + name + " does not exist");
-  }
-  var numDays = convertDaysToNumber(days);
-  var oldNumDays = myFriend.interval;
-  myFriend.interval = numDays;
-  writeFriendsData(friends);
-  console.info("Friend " + name + " now at " + numDays + " days (was " + oldNumDays + ")");
-}
-
-function listFriend(name) {
-  var friends = loadFriendsData();
-  var myFriend = getFriendByName(friends, name)[0];
-  if (!myFriend) {
-    fail("Friend " + name + " does not exist");
-  }
-  console.log(myFriend);
-}
-
-function addEvent(friendName, date, memo) {
-  var friends = loadFriendsData();
-  var myFriend = getFriendByName(friends, friendName)[0];
-  if (!myFriend) {
-    fail("Friend " + friendName + " does not exist");
-  }
-  var events = loadEventsData();
-  var isoDate = parseDate(date).format(DATE_STORAGE_FORMAT);
-  events.push({"name": friendName, "date": isoDate, "memo": memo});
-  writeEventsData(events);
-  console.info("Added event '" + memo + "' on " + isoDate + " with " + friendName);
 }
 
 /**
@@ -171,6 +117,90 @@ function parseWeekday(s) {
     }
   }
   return false;
+}
+
+// Public API
+function listFriends() {
+  var NEW_INDICATOR = "new       ";
+
+  var events = loadEventsData();
+  var friends = loadFriendsData();
+
+  var eventsByFriend = _.groupBy(events, "name");
+  var nextEventByFriend = _.map(friends, friend => {
+    var lastEvent = _.sortBy(eventsByFriend[friend.name], "date").reverse()[0];
+    return {
+      name: friend.name,
+      date: lastEvent ? moment(lastEvent.date).add(friend.interval, "days").format(DATE_DISPLAY_FORMAT) : NEW_INDICATOR
+    };
+  });
+  _.sortBy(nextEventByFriend, "date").forEach(friend => {
+    console.log(friend.date + "  " + friend.name);
+  });
+}
+
+function addFriend(name, days) {
+  var friends = loadFriendsData();
+  var myFriend = getFriendByName(friends, name)[0];
+  if (myFriend) {
+    fail("Friend " + name + " already exists");
+  }
+  var numDays = days !== undefined ? convertDaysToNumber(days) : DEFAULT_NUM_DAYS;
+  friends.push({"name": name, "interval": numDays});
+  writeFriendsData(friends);
+  console.info("Added friend " + name);
+}
+
+function editFriend(name, days) {
+  var friends = loadFriendsData();
+  var myFriend = getFriendByName(friends, name)[0];
+  if (!myFriend) {
+    return ask(
+      "New friend " + name + "! Add them to friendlog? [yN]",
+      (answer) => ifYesAddFriend(answer, name, () => editFriend(name, days))
+    );
+  }
+  var numDays = convertDaysToNumber(days);
+  var oldNumDays = myFriend.interval;
+  myFriend.interval = numDays;
+  writeFriendsData(friends);
+  console.info("Friend " + name + " now at " + numDays + " days (was " + oldNumDays + ")");
+}
+
+function listFriend(name) {
+  var friends = loadFriendsData();
+  var myFriend = getFriendByName(friends, name)[0];
+  if (!myFriend) {
+    return ask(
+      "New friend " + name + "! Add them to friendlog? [yN]",
+      (answer) => ifYesAddFriend(answer, name, () => listFriend(name))
+    );
+  }
+  console.log(myFriend);
+}
+
+function addEvent(friendName, date, memo) {
+  var friends = loadFriendsData();
+  var myFriend = getFriendByName(friends, friendName)[0];
+  if (!myFriend) {
+    return ask(
+      "New friend " + friendName + "! Add them to friendlog? [yN]",
+      (answer) => ifYesAddFriend(answer, friendName, () => addEvent(friendName, date, memo))
+    );
+  }
+  var events = loadEventsData();
+  var isoDate = parseDate(date).format(DATE_STORAGE_FORMAT);
+  events.push({"name": friendName, "date": isoDate, "memo": memo});
+  writeEventsData(events);
+  console.info("Added event '" + memo + "' on " + isoDate + " with " + friendName);
+}
+
+function ifYesAddFriend(answer, name, callback) {
+  if (-1 !== ["y", "yes", "Y", "YES"].indexOf(answer)) {
+    addFriend(name);
+    return callback();
+  }
+  fail("Friend " + name + " does not exist");
 }
 
 function showHelp() {
