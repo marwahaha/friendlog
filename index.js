@@ -56,8 +56,8 @@ function loadConfigData() {
 }
 
 // Helper functions
-function getFriendByUser(friends, user) {
-  return _.filter(friends, friend => friend.user === user);
+function getFriendByName(friends, name) {
+  return _.filter(friends, friend => friend.name === name);
 }
 
 function convertDaysToNumber(days) {
@@ -75,64 +75,64 @@ function listFriends() {
   var events = loadEventsData();
   var friends = loadFriendsData();
 
-  var eventsByFriend = _.groupBy(events, 'user');
+  var eventsByFriend = _.groupBy(events, 'name');
   var nextEventByFriend = _.map(friends, friend => {
-    var lastEvent = _.sortBy(eventsByFriend[friend.user], 'date').reverse()[0];
+    var lastEvent = _.sortBy(eventsByFriend[friend.name], 'date').reverse()[0];
     return {
-      user: friend.user,
-      date: lastEvent ? moment(lastEvent.date).add(friend.freq, 'days').format(DATE_DISPLAY_FORMAT) : NEW_INDICATOR
+      name: friend.name,
+      date: lastEvent ? moment(lastEvent.date).add(friend.interval, 'days').format(DATE_DISPLAY_FORMAT) : NEW_INDICATOR
     };
   });
   _.sortBy(nextEventByFriend, 'date').forEach(friend => {
-    console.log(friend.date + '  ' + friend.user);
+    console.log(friend.date + '  ' + friend.name);
   });
 }
 
-function addUser(user, days) {
+function addFriend(name, days) {
   var friends = loadFriendsData();
-  var myFriend = getFriendByUser(friends, user)[0];
+  var myFriend = getFriendByName(friends, name)[0];
   if (!!myFriend) {
-    fail("Friend " + user + " already exists")
+    fail("Friend " + name + " already exists")
   }
   var numDays = days !== undefined ? convertDaysToNumber(days) : DEFAULT_NUM_DAYS;
-  friends.push({"user": user, "freq": numDays});
+  friends.push({"name": name, "interval": numDays});
   writeFriendsData(friends);
-  console.info("Added friend " + user);
+  console.info("Added friend " + name);
 }
 
-function editUser(user, days) {
+function editFriend(name, days) {
   var friends = loadFriendsData();
-  var myFriend = getFriendByUser(friends, user)[0];
+  var myFriend = getFriendByName(friends, name)[0];
   if (!myFriend) {
-    fail("Friend " + user + " does not exist")
+    fail("Friend " + name + " does not exist")
   }
   var numDays = convertDaysToNumber(days);
-  var oldNumDays = myFriend.freq;
-  myFriend.freq = numDays;
+  var oldNumDays = myFriend.interval;
+  myFriend.interval = numDays;
   writeFriendsData(friends);
-  console.info("Friend " + user + " now at " + numDays + " days (was " + oldNumDays + ")");
+  console.info("Friend " + name + " now at " + numDays + " days (was " + oldNumDays + ")");
 }
 
-function listUser(user) {
+function listFriend(name) {
   var friends = loadFriendsData();
-  var myFriend = getFriendByUser(friends, user)[0];
+  var myFriend = getFriendByName(friends, name)[0];
   if (!myFriend) {
-    fail("Friend " + user + " does not exist");
+    fail("Friend " + name + " does not exist");
   }
   console.log(myFriend);
 }
 
-function addEvent(user, date, memo) {
+function addEvent(friendName, date, memo) {
   var friends = loadFriendsData();
-  var myFriend = getFriendByUser(friends, user)[0];
+  var myFriend = getFriendByName(friends, friendName)[0];
   if (!myFriend) {
-    fail("Friend " + user + " does not exist");
+    fail("Friend " + friendName + " does not exist");
   }
   var events = loadEventsData();
   var isoDate = parseDate(date).format(DATE_STORAGE_FORMAT);
-  events.push({"user": user, "date": isoDate, "memo": memo});
+  events.push({"name": friendName, "date": isoDate, "memo": memo});
   writeEventsData(events);
-  console.info("Added event '" + memo + "' on " + isoDate + " with " + user);
+  console.info("Added event '" + memo + "' on " + isoDate + " with " + friendName);
 }
 
 /**
@@ -176,23 +176,23 @@ function parseWeekday(s) {
 
 function showHelp() {
   console.log("welcome to friendlog :-)")
-  console.log("   add [friend] [freq=10] " + "Adds [friend]. Events expected every [freq] days")
-  console.log("   list                   " + "Lists each friend and their next expected event")
-  console.log("   list [friend]          " + "View info about [friend]")
-  console.log("   edit [friend] [freq]   " + "Edits [friend]'s expected [freq]")
-  console.log("   hangout [f] [d] [m]    " + "Records event with [friend] on [date] with [memo]")
-  console.log("   history [?friend]      " + "See history of all friends or specific [friend]")
+  console.log("   add [friend] [interval=10] " + "Adds [friend]. Events expected every [interval] days")
+  console.log("   list                       " + "Lists each friend and their next expected event")
+  console.log("   list [friend]              " + "View info about [friend]")
+  console.log("   edit [friend] [interval]   " + "Edits [friend]'s expected [interval]")
+  console.log("   hangout [f] [d] [m]        " + "Records event with [friend] on [date] with [memo]")
+  console.log("   history [?friend]          " + "See history of all friends or specific [friend]")
 }
 
 function fail(msg) {
   throw msg;
 }
 
-function showHistory(user) {
+function showHistory(friendName) {
   var events = loadEventsData();
-  var eventsByFriend = _.groupBy(events, 'user');
+  var eventsByFriend = _.groupBy(events, 'name');
   Object.keys(eventsByFriend).sort().forEach(friend => {
-    if (!user || user === friend) {
+    if (!friendName || friendName === friend) {
       prettyPrintFriendHeader(friend);
       _.sortBy(eventsByFriend[friend], 'date').reverse().map(prettyPrintEvent);
       console.log();
@@ -218,15 +218,15 @@ function main() {
   if (0 === args.length) {
     callDefault();
   } else if (2 === args.length && 'add' === args[0]) {
-    addUser(args[1]);
+    addFriend(args[1]);
   } else if (3 === args.length && 'add' === args[0]) {
-    addUser(args[1], args[2]);
+    addFriend(args[1], args[2]);
   } else if (1 === args.length && 'list' === args[0]) {
     listFriends();
   } else if (2 === args.length && 'list' === args[0]) {
-    listUser(args[1]);
+    listFriend(args[1]);
   } else if (3 === args.length && 'edit' === args[0]) {
-    editUser(args[1], args[2]);
+    editFriend(args[1], args[2]);
   } else if (1 === args.length && 'history' === args[0]) {
     showHistory();
     } else if (2 === args.length && 'history' === args[0]) {
