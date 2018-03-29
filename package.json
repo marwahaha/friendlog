@@ -12,5 +12,9 @@
     "lodash": "^4.17.5",
     "moment": "^2.21.0"
   },
+  "files": [
+    "index.js",
+    "config.json"
+  ],
   "description": ""
 }
