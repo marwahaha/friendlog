@@ -84,7 +84,13 @@ function listFriends() {
     };
   });
   _.sortBy(nextEventByFriend, 'date').forEach(friend => {
-    console.log(friend.date + '  ' + friend.name);
+    let dateColumn;
+    if (friend.date < TODAY.format(DATE_DISPLAY_FORMAT)) {
+      dateColumn = friend.date + '*';
+    } else {
+      dateColumn = friend.date + ' ';
+    }
+    console.log(dateColumn + ' ' + friend.name);
   });
 }
 
