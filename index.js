@@ -213,7 +213,7 @@ function prettyPrintEvent(event) {
 }
 
 // Default behavior
-var callDefault = showHelp;
+var callDefault = listFriends;
 
 // figure out which command you're running
 function main() {
