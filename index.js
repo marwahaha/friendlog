@@ -83,7 +83,10 @@ function listFriends() {
     };
   });
   _.sortBy(nextEventByFriend, "date").forEach(friend => {
-    console.log(friend.date + "  " + friend.name);
+    const today = TODAY.format(DATE_DISPLAY_FORMAT);
+    const dateColumn = friend.date +
+        (friend.date < today ? "*" : " ");
+    console.log(dateColumn + " " + friend.name);
   });
 }
 
@@ -209,7 +212,7 @@ function prettyPrintEvent(event) {
 }
 
 // Default behavior
-var callDefault = showHelp;
+var callDefault = listFriends;
 
 // figure out which command you're running
 function main() {
