@@ -3,18 +3,24 @@
   "version": "0.2.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run lint",
+    "lint": "eslint index.js",
+    "lint-fix": "eslint index.js --fix",
     "reset": "echo '[]' > data/friends.json; echo '[]' > data/events.json"
   },
   "author": "Kunal Marwaha, Pandu Rendradjaja",
   "license": "ISC",
   "dependencies": {
     "lodash": "^4.17.5",
-    "moment": "^2.21.0"
+    "moment": "^2.21.0",
+    "readline": "^1.3.0"
   },
   "files": [
     "index.js",
     "config.json"
   ],
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "eslint": "^4.19.1"
+  }
 }
