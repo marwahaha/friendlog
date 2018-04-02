@@ -1,36 +1,34 @@
-**This is currently _very_ fragile. Invalid commands may break things. Be careful!**
+**This is somewhat fragile. Invalid commands may break things.**
 
 ### Setup
 
-Get the code:
+1. Get the code:
 ```
 $ git clone https://github.com/marwahaha/friendlog.git
 ```
 
-[Install Node](https://nodejs.org/en/download/package-manager/) (if you haven't before)
+2. [Install Node](https://nodejs.org/en/download/package-manager/) (if you haven't before)
 
-Install friendlog:
+3. Install friendlog:
 ```
 $ cd friendlog
 $ npm install
 ```
 
-Add an alias to your profile (i.e. ~/.bash_profile):
+4a. Add an alias to your profile (i.e. ~/.bash_profile):
 ```
 alias friendlog="node $(pwd)/index.js"
 ```
 
-Or you may prefer these aliases:
+4b. You may also like these aliases:
 ```
 alias fl="friendlog"
 alias flh="fl hangout"
 ```
 
-Add the aliases to your profile (i.e. `~/.bash_profile`) so you always have them!
-
-You should now be able to check usage:
+5. You're all set!
 ```
-$ friendlog --help
+$ friendlog help
 ```
 
 ### Basic Usage
@@ -40,7 +38,7 @@ Initial state (no friends):
 $ friendlog
 ```
 
-Add some friends and the ideal interval you'd like to see them (in days):
+Add friends and an ideal interval (in days) you'd like to see them:
 ```
 $ friendlog add Alice 5  # your best friend
 $ friendlog add "Bob Doe" 15   # not quite so close
@@ -60,8 +58,6 @@ $ friendlog list
 2018-03-29  Kunal
 new         Bob Doe     # no hangouts logged yet
 ```
-
-
 
 ### Contributing tips:
 1. Make sure you lint first `npm run lint`; `npm run lint-fix` will fix many errors!
