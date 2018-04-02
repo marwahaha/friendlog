@@ -37,4 +37,7 @@ alias fl="friendlog"
 alias flh="fl hangout"
 ```
 
-Add these to your profile (i.e. ~/.bash_profile)
+Add the aliases to your profile (i.e. `~/.bash_profile`) so you always have them!
+
+Contributing tips:
+1. Make sure you lint first `npm run lint`; `npm run lint-fix` will fix many errors!
