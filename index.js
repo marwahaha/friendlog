@@ -89,8 +89,7 @@ function parseDate(s) {
     date = moment();
   } else if (s === "yesterday" || s === "yday") {
     date = moment().subtract(1, "days");
-  } else if (
-    (s)) {
+  } else if (parseWeekday(s)) {
     date = parseWeekday(s);
   } else {
     date = moment(date, DATE_PARSE_FORMAT, true);
@@ -100,7 +99,6 @@ function parseDate(s) {
   }
   return date.startOf("day");
 }
-
 
 function parseWeekday(s) {
   const weekdays = [
@@ -113,7 +111,7 @@ function parseWeekday(s) {
     ["saturday",  "sat"],
   ];
   for (let i = 1; i <= 7; i++) {
-    const d = TODAY.subtract(i, "days");
+    const d = moment(TODAY).subtract(i, "days");
     if (weekdays[d.day()].indexOf(s) !== -1) {
       return d;
     }
@@ -137,9 +135,8 @@ function listFriends() {
     };
   });
   _.sortBy(nextEventByFriend, "date").forEach(friend => {
-    const today = TODAY.format(DATE_DISPLAY_FORMAT);
-    const dateColumn = friend.date +
-        (friend.date < today ? "*" : " ");
+    const today = TODAY.format(DATE_DISPLAY_FORMAT); // TODO - what if date display format is not Year, Month, Day?
+    const dateColumn = friend.date + (friend.date < today ? "*" : " ");
     console.log(dateColumn + " " + friend.name);
   });
 }
@@ -206,6 +203,7 @@ function ifYesAddFriend(answer, name, callback) {
     return callback();
   }
   fail("Friend " + name + " does not exist");
+}
 
 function showHelp() {
   console.log("welcome to friendlog :-)");
