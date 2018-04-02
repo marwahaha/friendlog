@@ -1,13 +1,5 @@
-* Version database
-* if adding event for non-existent user, prompt to create user
-* split into multiple files
-* add script to add aliasing (or put example aliases in readme)
-* handle other date formats (gracefully!)
-* make scripts npm-accessible AND fl-accessible
-* tab-complete friends
-
 To spec out:
-* when listing or editing non-existent user, should we prompt to create user?
+* make scripts npm-accessible AND fl-accessible
 * mark friends as "scheduled hangout" (to spec)
 * facebook integration (to populate names?)
 * types of hangouts (granularity? phone call vs 1/1 hangout. to spec out)
@@ -17,7 +9,5 @@ To spec out:
 * calendar view of history 
 * rename a user and migrate all their data to the new username (should we use user ids instead of usernames then?)
 * should we use a real database?
-* list all hangouts for a friend
 * nicknames ("kunal-marwaha" can also be addressed "kunal")
 * hangout with multiple people
-* "snooze" a person?
