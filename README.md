@@ -26,6 +26,8 @@ alias fl="friendlog"
 alias flh="fl hangout"
 ```
 
+Add the aliases to your profile (i.e. `~/.bash_profile`) so you always have them!
+
 You should now be able to check usage:
 ```
 $ friendlog --help
@@ -38,7 +40,7 @@ Initial state (no friends):
 $ friendlog
 ```
 
-Add some friends and the ideal frequency you'd like to see them (in days):
+Add some friends and the ideal interval you'd like to see them (in days):
 ```
 $ friendlog add Alice 5  # your best friend
 $ friendlog add "Bob Doe" 15   # not quite so close
@@ -59,3 +61,7 @@ $ friendlog list
 new         Bob Doe     # no hangouts logged yet
 ```
 
+
+
+### Contributing tips:
+1. Make sure you lint first `npm run lint`; `npm run lint-fix` will fix many errors!
