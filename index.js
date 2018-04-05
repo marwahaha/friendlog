@@ -110,18 +110,18 @@ function convertDaysToNumber(days) {
   return days;
 }
 
-function parseDate(s) { // Returns a Moment.
+function parseDate(input) {
   var date;
-  if (s === "today") {
+  if (input === "today") {
     date = moment();
-  } else if (s === "yesterday" || s === "yday") {
+  } else if (input === "yesterday" || input === "yday") {
     date = moment().subtract(1, "days");
-  } else if (parseWeekday(s)) {
-    date = parseWeekday(s);
+  } else if (parseWeekday(input)) {
+    date = parseWeekday(input);
   } else {
-    date = moment(date, DATE_PARSE_FORMAT, true);
+    date = moment(input, DATE_PARSE_FORMAT, true);
     if (!date.isValid()) {
-      fail("Invalid date (specified '" + s + "')");
+      fail("Invalid date (specified '" + input + "')");
     }
   }
   return date.startOf("day");
