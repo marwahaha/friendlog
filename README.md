@@ -26,6 +26,13 @@ alias fl="friendlog"
 alias flh="fl hangout"
 ```
 
+4c. Set up tab-completion:
+```
+FRIENDLOG_INSTALL_DIR=/path/to/your/friendlog/installation
+source $FRIENDLOG_INSTALL_DIR/tab-completion.sh
+complete -F _fl fl
+```
+
 5. You're all set!
 ```
 $ friendlog help
