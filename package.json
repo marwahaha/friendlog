@@ -10,6 +10,7 @@
   "author": "Kunal Marwaha, Pandu Rendradjaja",
   "license": "ISC",
   "dependencies": {
+    "columnify": "^1.5.4",
     "lodash": "^4.17.5",
     "minimist": "^1.2.0",
     "moment": "^2.21.0",

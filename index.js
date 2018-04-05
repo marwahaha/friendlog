@@ -6,6 +6,7 @@ var fs = require("fs");
 var os = require("os");
 var rl = require("readline");
 var argv = require("minimist")(process.argv.slice(2));
+var columnify = require('columnify')
 
 // Constants
 var FL_DIRECTORY = os.homedir() + "/.friendlog/";
@@ -237,11 +238,15 @@ function showHelp() {
 
 function showHistory(friendName) {
   var events = loadEventsData();
+  if (argv.c) {
+    return console.log(columnify(_.sortBy(events, "date").reverse()));
+  }
   var eventsByFriend = _.groupBy(events, "name");
   if (friendName) {
     return prettyPrintFriend(friendName, eventsByFriend);
   }
   Object.keys(eventsByFriend).sort().forEach(friend => prettyPrintFriend(friend, eventsByFriend));
+
 }
 
 // Printing helpers
