@@ -220,11 +220,14 @@ function fail(msg) {
 }
 
 function showHistory(friendName) {
+  if (friendName == "--chronological") {
+    return showChronologicalHistory();
+  }
   var events = loadEventsData();
   var eventsByFriend = _.groupBy(events, "name");
   var perFriend = function(friend) {
     prettyPrintFriendHeader(friend);
-    _.sortBy(eventsByFriend[friend], "date").reverse().map(prettyPrintEvent);
+    _.sortBy(eventsByFriend[friend], "date").reverse().map(prettyPrintEventNameless);
     console.log();
   }
   if (friendName) {
@@ -234,12 +237,21 @@ function showHistory(friendName) {
   }
 }
 
+function showChronologicalHistory() {
+  var events = loadEventsData();
+  _.sortBy(events, "date").reverse().map(prettyPrintEvent);
+}
+
+function prettyPrintEvent(event) {
+  console.log(event.date + " \t" + event.name + " \t" + event.memo);
+}
+
 function prettyPrintFriendHeader(friend) {
   console.log(friend);
   console.log("-".repeat(friend.length));
 }
 
-function prettyPrintEvent(event) {
+function prettyPrintEventNameless(event) {
   console.log(event.date + "  " + event.memo);
 }
 
