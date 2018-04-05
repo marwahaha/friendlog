@@ -83,18 +83,18 @@ function convertDaysToNumber(days) {
 /**
  * Returns a Moment.
  */
-function parseDate(s) {
+function parseDate(input) {
   var date;
-  if (s === "today") {
+  if (input === "today") {
     date = moment();
-  } else if (s === "yesterday" || s === "yday") {
+  } else if (input === "yesterday" || input === "yday") {
     date = moment().subtract(1, "days");
-  } else if (parseWeekday(s)) {
-    date = parseWeekday(s);
+  } else if (parseWeekday(input)) {
+    date = parseWeekday(input);
   } else {
-    date = moment(date, DATE_PARSE_FORMAT, true);
+    date = moment(input, DATE_PARSE_FORMAT, true);
     if (!date.isValid()) {
-      fail("Invalid date (specified '" + s + "')");
+      fail("Invalid date (specified '" + input + "')");
     }
   }
   return date.startOf("day");
@@ -220,15 +220,30 @@ function fail(msg) {
 }
 
 function showHistory(friendName) {
+  if (friendName == "--chronological") {
+    return showChronologicalHistory();
+  }
   var events = loadEventsData();
   var eventsByFriend = _.groupBy(events, "name");
-  Object.keys(eventsByFriend).sort().forEach(friend => {
-    if (!friendName || friendName === friend) {
-      prettyPrintFriendHeader(friend);
-      _.sortBy(eventsByFriend[friend], "date").reverse().map(prettyPrintEvent);
-      console.log();
-    }
-  });
+  var perFriend = function(friend) {
+    prettyPrintFriendHeader(friend);
+    _.sortBy(eventsByFriend[friend], "date").reverse().map(prettyPrintEventNameless);
+    console.log();
+  }
+  if (friendName) {
+    perFriend(friendName);
+  } else {
+    Object.keys(eventsByFriend).sort().forEach(perFriend);
+  }
+}
+
+function showChronologicalHistory() {
+  var events = loadEventsData();
+  _.sortBy(events, "date").reverse().map(prettyPrintEvent);
+}
+
+function prettyPrintEvent(event) {
+  console.log(event.date + " \t" + event.name + " \t" + event.memo);
 }
 
 function prettyPrintFriendHeader(friend) {
@@ -236,7 +251,7 @@ function prettyPrintFriendHeader(friend) {
   console.log("-".repeat(friend.length));
 }
 
-function prettyPrintEvent(event) {
+function prettyPrintEventNameless(event) {
   console.log(event.date + "  " + event.memo);
 }
 
