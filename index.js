@@ -5,6 +5,7 @@ var _ = require("lodash");
 var fs = require("fs");
 var os = require("os");
 var rl = require("readline");
+var argv = require("minimist")(process.argv.slice(2));
 
 // Constants
 var FL_DIRECTORY = os.homedir() + "/.friendlog/";
@@ -264,7 +265,7 @@ var callDefault = listFriends;
 
 // figure out which command you're running
 function main() {
-  var args = process.argv.slice(2);
+  var args = argv._;
   if (0 === args.length) {
     callDefault();
   } else if (2 === args.length && "add" === args[0]) {
