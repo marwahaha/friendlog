@@ -9,10 +9,11 @@ $ git clone https://github.com/marwahaha/friendlog.git
 
 2. [Install Node](https://nodejs.org/en/download/package-manager/) (if you haven't before)
 
-3. Install friendlog:
+3. Install friendlog and set up `data` files:
 ```
 $ cd friendlog
 $ npm install
+$ npm run reset
 ```
 
 4a. Add an alias to your profile (i.e. ~/.bash_profile):
