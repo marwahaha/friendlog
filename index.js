@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 "use strict";
 var moment = require("moment");
 var _ = require("lodash");
