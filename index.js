@@ -168,6 +168,11 @@ function listFriends() {
   });
 }
 
+function listNames() {
+  var friends = loadFriendsData();
+  friends.forEach(f => console.log(f.name));
+}
+
 function addFriend(name, days) {
   var friends = loadFriendsData();
   var myFriend = getFriendByName(friends, name)[0];
@@ -268,6 +273,8 @@ function main() {
     addFriend(args[1]);
   } else if (3 === args.length && "add" === args[0]) {
     addFriend(args[1], args[2]);
+  } else if (1 === args.length && "list-names" === args[0]) {  // todo --name-only
+    listNames();
   } else if (1 === args.length && "list" === args[0]) {
     listFriends();
   } else if (2 === args.length && "list" === args[0]) {
