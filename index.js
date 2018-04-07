@@ -6,7 +6,7 @@ var fs = require("fs");
 var os = require("os");
 var rl = require("readline");
 var argv = require("minimist")(process.argv.slice(2));
-var columnify = require('columnify')
+var columnify = require("columnify");
 
 // Constants
 var FL_DIRECTORY = os.homedir() + "/.friendlog/";
