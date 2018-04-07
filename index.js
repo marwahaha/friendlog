@@ -233,12 +233,13 @@ function showHelp() {
   console.log("   list [friend]              " + "View info about [friend]");
   console.log("   edit [friend] [interval]   " + "Edits [friend]'s expected [interval]");
   console.log("   hangout [f] [d] [m]        " + "Records event with [friend] on [date] with [memo]");
-  console.log("   history [?friend]          " + "See history of all friends or specific [friend]");
+  console.log("   history [-c]               " + "See history, grouped by friend or [-chronological]");
+  console.log("   history [friend]           " + "See history with specific friend");
 }
 
 function showHistory(friendName) {
   var events = loadEventsData();
-  if (argv.c) {
+  if (!friendName && (argv.c || argv.chronological)) {
     return console.log(columnify(_.sortBy(events, "date").reverse()));
   }
   var eventsByFriend = _.groupBy(events, "name");

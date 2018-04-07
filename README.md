@@ -45,6 +45,7 @@ Alice
 Kunal
 -----
 2018-03-29  Created friendlog
+
 ```
 
 ## Contributing
