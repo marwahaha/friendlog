@@ -3,15 +3,14 @@
 var moment = require("moment");
 var _ = require("lodash");
 var fs = require("fs");
+var os = require("os");
 var rl = require("readline");
 
 // Constants
-var THIS_SCRIPT = fs.realpathSync(process.argv[1]);
-var DIRECTORY = THIS_SCRIPT.substring(0, THIS_SCRIPT.lastIndexOf("/") + 1);
-var DATA_DIRECTORY = DIRECTORY + "data/";
-var FRIENDS_PATH = DATA_DIRECTORY + "friends.json";
-var EVENTS_PATH = DATA_DIRECTORY + "events.json";
-var CONFIG_PATH = DIRECTORY + "config.json";
+var FL_DIRECTORY = os.homedir() + "/.friendlog/";
+var FRIENDS_PATH = FL_DIRECTORY + "friends.json";
+var EVENTS_PATH = FL_DIRECTORY + "events.json";
+var CONFIG_PATH = FL_DIRECTORY + "config.json";
 
 var DATE_STORAGE_FORMAT = "YYYY-MM-DD";
 var DATE_PARSE_FORMAT = "YYYY-MM-DD";
@@ -23,16 +22,15 @@ var DEFAULT_NUM_DAYS = 10;
 var config = loadConfigData();
 
 // Setup
-function checkForSetup() {
-  try {
-    loadFriendsData();
-    loadEventsData();
-  } catch (err) {
-    console.log("Setting up friendlog! :-)");
-    fs.existsSync(DATA_DIRECTORY) || fs.mkdirSync(DATA_DIRECTORY);
-    writeFriendsData([]);
-    writeEventsData([]);
-  }
+try {
+  loadFriendsData();
+  loadEventsData();
+} catch (err) {
+  console.log("Setting up friendlog! :-)");
+  fs.existsSync(FL_DIRECTORY) || fs.mkdirSync(FL_DIRECTORY);
+  fs.existsSync(CONFIG_PATH) || ((config = JSON.stringify({"prettyPrintJson": true})) && writeConfigData());
+  fs.existsSync(FRIENDS_PATH) || writeFriendsData([]);
+  fs.existsSync(EVENTS_PATH) || writeEventsData([]);
 }
 
 // Data transfer
@@ -54,6 +52,10 @@ function writeFriendsData(friends) {
 function writeEventsData(events) {
   var rawNewEvents = stringify(events);
   fs.writeFileSync(EVENTS_PATH, rawNewEvents);
+}
+
+function writeConfigData() {
+  fs.writeFileSync(CONFIG_PATH, stringify(config));
 }
 
 function stringify(jsonObject) {
@@ -260,7 +262,6 @@ var callDefault = listFriends;
 // figure out which command you're running
 function main() {
   var args = process.argv.slice(2);
-  checkForSetup();
   if (0 === args.length) {
     callDefault();
   } else if (2 === args.length && "add" === args[0]) {
