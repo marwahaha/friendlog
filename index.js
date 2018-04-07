@@ -7,8 +7,9 @@ var rl = require("readline");
 
 // Constants
 var DIRECTORY = process.argv[1].substring(0, process.argv[1].lastIndexOf("/") + 1);
-var FRIENDS_PATH = DIRECTORY + "data/friends.json";
-var EVENTS_PATH = DIRECTORY + "data/events.json";
+var DATA_DIRECTORY = DIRECTORY + "data/";
+var FRIENDS_PATH = DATA_DIRECTORY + "friends.json";
+var EVENTS_PATH = DATA_DIRECTORY + "events.json";
 var CONFIG_PATH = DIRECTORY + "config.json";
 
 var DATE_STORAGE_FORMAT = "YYYY-MM-DD";
@@ -27,7 +28,7 @@ function checkForSetup() {
     loadEventsData();
   } catch (err) {
     console.log("Setting up friendlog! :-)");
-    fs.existsSync("data") || fs.mkdirSync("data");
+    fs.existsSync(DATA_DIRECTORY) || fs.mkdirSync(DATA_DIRECTORY);
     writeFriendsData([]);
     writeEventsData([]);
   }
