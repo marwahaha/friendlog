@@ -6,7 +6,8 @@ var fs = require("fs");
 var rl = require("readline");
 
 // Constants
-var DIRECTORY = process.argv[1].substring(0, process.argv[1].lastIndexOf("/") + 1);
+var THIS_SCRIPT = fs.realpathSync(process.argv[1]);
+var DIRECTORY = THIS_SCRIPT.substring(0, THIS_SCRIPT.lastIndexOf("/") + 1);
 var DATA_DIRECTORY = DIRECTORY + "data/";
 var FRIENDS_PATH = DATA_DIRECTORY + "friends.json";
 var EVENTS_PATH = DATA_DIRECTORY + "events.json";
