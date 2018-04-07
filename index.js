@@ -20,6 +20,19 @@ var DEFAULT_NUM_DAYS = 10;
 // Config
 var config = loadConfigData();
 
+// Setup
+function checkForSetup() {
+  try {
+    loadFriendsData();
+    loadEventsData();
+  } catch (err) {
+    console.log("Setting up friendlog! :-)");
+    fs.existsSync("data") || fs.mkdirSync("data");
+    writeFriendsData([]);
+    writeEventsData([]);
+  }
+}
+
 // Data transfer
 function loadFriendsData() {
   var rawFriends = fs.readFileSync(FRIENDS_PATH);
@@ -68,8 +81,20 @@ function ask(question, callback) {
   });
 }
 
+function ifYesAddFriend(answer, name, callback) {
+  if (-1 !== ["y", "yes", "Y", "YES"].indexOf(answer)) {
+    addFriend(name);
+    return callback();
+  }
+  fail("Friend " + name + " does not exist");
+}
+
 function getFriendByName(friends, name) {
   return _.filter(friends, friend => friend.name === name);
+}
+
+function fail(msg) {
+  throw msg;
 }
 
 // Date-related helpers
@@ -81,10 +106,7 @@ function convertDaysToNumber(days) {
   return days;
 }
 
-/**
- * Returns a Moment.
- */
-function parseDate(s) {
+function parseDate(s) { // Returns a Moment.
   var date;
   if (s === "today") {
     date = moment();
@@ -198,14 +220,6 @@ function addEvent(friendName, date, memo) {
   console.info("Added event '" + memo + "' on " + isoDate + " with " + friendName);
 }
 
-function ifYesAddFriend(answer, name, callback) {
-  if (-1 !== ["y", "yes", "Y", "YES"].indexOf(answer)) {
-    addFriend(name);
-    return callback();
-  }
-  fail("Friend " + name + " does not exist");
-}
-
 function showHelp() {
   console.log("welcome to friendlog :-)");
   console.log("   add [friend] [interval=10] " + "Adds [friend]. Events expected every [interval] days");
@@ -214,10 +228,6 @@ function showHelp() {
   console.log("   edit [friend] [interval]   " + "Edits [friend]'s expected [interval]");
   console.log("   hangout [f] [d] [m]        " + "Records event with [friend] on [date] with [memo]");
   console.log("   history [?friend]          " + "See history of all friends or specific [friend]");
-}
-
-function fail(msg) {
-  throw msg;
 }
 
 function showHistory(friendName) {
@@ -232,6 +242,7 @@ function showHistory(friendName) {
   });
 }
 
+// Printing helpers
 function prettyPrintFriendHeader(friend) {
   console.log(friend);
   console.log("-".repeat(friend.length));
@@ -247,6 +258,7 @@ var callDefault = listFriends;
 // figure out which command you're running
 function main() {
   var args = process.argv.slice(2);
+  checkForSetup();
   if (0 === args.length) {
     callDefault();
   } else if (2 === args.length && "add" === args[0]) {
