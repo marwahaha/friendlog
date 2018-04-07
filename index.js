@@ -237,19 +237,19 @@ function showHelp() {
 function showHistory(friendName) {
   var events = loadEventsData();
   var eventsByFriend = _.groupBy(events, "name");
-  var perFriend = function(friend) {
-    prettyPrintFriendHeader(friend);
-    _.sortBy(eventsByFriend[friend], "date").reverse().map(prettyPrintEvent);
-    console.log();
-  }
   if (friendName) {
-    perFriend(friendName);
-  } else {
-    Object.keys(eventsByFriend).sort().forEach(perFriend);
+    return prettyPrintFriend(friendName, eventsByFriend);
   }
+  Object.keys(eventsByFriend).sort().forEach(friend => prettyPrintFriend(friend, eventsByFriend));
 }
 
 // Printing helpers
+function prettyPrintFriend(friend, eventsByFriend) {
+  prettyPrintFriendHeader(friend);
+  _.sortBy(eventsByFriend[friend], "date").reverse().map(prettyPrintEvent);
+  console.log();
+}
+
 function prettyPrintFriendHeader(friend) {
   console.log(friend);
   console.log("-".repeat(friend.length));
