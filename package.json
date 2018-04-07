@@ -5,8 +5,7 @@
   "scripts": {
     "test": "npm run lint",
     "lint": "eslint index.js",
-    "lint-fix": "eslint index.js --fix",
-    "reset": "mkdir -p data; echo '[]' > data/friends.json; echo '[]' > data/events.json"
+    "lint-fix": "eslint index.js --fix"
   },
   "author": "Kunal Marwaha, Pandu Rendradjaja",
   "license": "ISC",
@@ -28,8 +27,7 @@
   ],
   "bin": {
     "friendlog": "./index.js",
-    "fl": "./index.js",
-    "flh": "./index.js hangout"
+    "fl": "./index.js"
   },
   "devDependencies": {
     "eslint": "^4.19.1"

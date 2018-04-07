@@ -7,18 +7,16 @@ npm install friendlog
 ```
 
 ## Basic Usage
-You can use `friendlog` or `fl`.
-
-`flh` is `friendlog hangout`.
 
 ```
 $ fl help
 ```
+You can use `friendlog` or `fl`.
 
 Add friends and an ideal interval (in days) you'd like to see them:
 ```
 $ friendlog add Alice 5  # your best friend
-$ fl add "Bob Doe" 15   # not quite so close
+$ fl add "Bob Doe" 15    # not quite so close
 $ fl add Kunal 10
 ```
 
@@ -27,6 +25,7 @@ Log a hangout:
 $ fl hangout Alice 2018-01-01 "Got coffee"
 $ flh Kunal 2018-03-19 "Created friendlog"
 ```
+You may like to add `alias flh="friendlog hangout"` to your `~/.bash_profile`.
 
 See who you should hang out with next and when:
 ```
