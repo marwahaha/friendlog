@@ -27,7 +27,9 @@
     "cli"
   ],
   "bin": {
-    "friendlog": "./index.js"
+    "friendlog": "./index.js",
+    "fl": "./index.js",
+    "flh": "./index.js hangout"
   },
   "devDependencies": {
     "eslint": "^4.19.1"
