@@ -1,63 +1,53 @@
-**This is somewhat fragile. Invalid commands may break things.**
+## Setup
 
-### Setup
+[Install Node](https://nodejs.org/en/download/package-manager/) (if you haven't before)
 
-1. Get the code:
 ```
-$ git clone https://github.com/marwahaha/friendlog.git
-```
-
-2. [Install Node](https://nodejs.org/en/download/package-manager/) (if you haven't before)
-
-3. Install friendlog:
-```
-$ cd friendlog
-$ npm install
+npm install friendlog
 ```
 
-4a. Add an alias to your profile (i.e. ~/.bash_profile):
-```
-alias friendlog="node $(pwd)/index.js"
-```
+## Basic Usage
+You can use `friendlog` or `fl`.
 
-4b. You may also like these aliases:
-```
-alias fl="friendlog"
-alias flh="fl hangout"
-```
+`flh` is `friendlog hangout`.
 
-5. You're all set!
 ```
-$ friendlog help
-```
-
-### Basic Usage
-
-Initial state (no friends):
-```
-$ friendlog
+$ fl help
 ```
 
 Add friends and an ideal interval (in days) you'd like to see them:
 ```
 $ friendlog add Alice 5  # your best friend
-$ friendlog add "Bob Doe" 15   # not quite so close
-$ friendlog add Kunal 10
+$ fl add "Bob Doe" 15   # not quite so close
+$ fl add Kunal 10
 ```
 
 Log a hangout:
 ```
-$ friendlog hangout alice 2018-01-01 "Got coffee"
-$ friendlog hangout kunal 2018-03-19 "Created friendlog"
+$ fl hangout Alice 2018-01-01 "Got coffee"
+$ flh Kunal 2018-03-19 "Created friendlog"
 ```
 
 See who you should hang out with next and when:
 ```
-$ friendlog list
+$ fl list
 2018-01-06  Alice
 2018-03-29  Kunal
 new         Bob Doe     # no hangouts logged yet
 ```
 
-### Contributing tips:
+See history of hangouts:
+```
+$ fl history
+Alice
+-----
+2018-01-06  Got coffee
+
+Kunal
+-----
+2018-03-29  Created friendlog
+```
+
+## Contributing
 1. Make sure you lint first `npm run lint`; `npm run lint-fix` will fix many errors!
+2. `npm version [major|minor|patch]` will bump version numbers; `npm publish` will publish package.
