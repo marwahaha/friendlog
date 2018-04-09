@@ -3,7 +3,7 @@
 [Install Node](https://nodejs.org/en/download/package-manager/) (if you haven't before)
 
 ```
-npm install friendlog
+npm install -g friendlog
 ```
 
 ## Basic Usage
