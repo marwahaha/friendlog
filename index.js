@@ -252,6 +252,11 @@ function showHistory(friendName) {
 
 // Printing helpers
 function prettyPrintFriend(friend, eventsByFriend) {
+  var friends = loadFriendsData();
+  var myFriend = getFriendByName(friends, friend)[0];
+  if (!myFriend) {
+    fail("Friend " + friend + " does not exist");
+  }
   prettyPrintFriendHeader(friend);
   _.sortBy(eventsByFriend[friend], "date").reverse().map(prettyPrintEvent);
   console.log();
