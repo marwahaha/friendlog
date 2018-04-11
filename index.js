@@ -163,11 +163,16 @@ function listFriends() {
       date: lastEvent ? moment(lastEvent.date).add(friend.interval, "days").format(DATE_DISPLAY_FORMAT) : NEW_INDICATOR
     };
   });
-  _.sortBy(nextEventByFriend, "date").forEach(friend => {
-    const today = TODAY.format(DATE_DISPLAY_FORMAT); // TODO - what if date display format is not Year, Month, Day?
-    const dateColumn = friend.date + (friend.date < today ? "*" : " ");
-    console.log(dateColumn + " " + friend.name);
-  });
+  var newFriends =    _.filter(nextEventByFriend, x => x.date === NEW_INDICATOR);
+  var nonNewFriends = _.filter(nextEventByFriend, x => x.date !== NEW_INDICATOR);
+  _.sortBy(nonNewFriends, "date").forEach(displayFriend);
+  _.sortBy(newFriends, "name").forEach(displayFriend);
+}
+
+function displayFriend(friend) {
+  const today = TODAY.format(DATE_DISPLAY_FORMAT); // TODO - what if date display format is not Year, Month, Day?
+  const dateColumn = friend.date + (friend.date < today ? "*" : " ");
+  console.log(dateColumn + " " + friend.name);
 }
 
 function addFriend(name, days) {
