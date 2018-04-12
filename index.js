@@ -240,7 +240,9 @@ function showHelp() {
 function showHistory(friendName) {
   var events = loadEventsData();
   if (!friendName && (argv.c || argv.chronological)) {
-    return console.log(columnify(_.sortBy(events, "date").reverse()));
+    return console.log(columnify(
+      _.sortBy(events, "date").reverse().map(ellipsifyEvent)
+    ));
   }
   var eventsByFriend = _.groupBy(events, "name");
   if (friendName) {
@@ -263,7 +265,21 @@ function prettyPrintFriendHeader(friend) {
 }
 
 function prettyPrintEvent(event) {
-  console.log(event.date + "  " + event.memo);
+  console.log(event.date + "  " + ellipsify(event.memo));
+}
+
+function ellipsify(s, maxLength) {
+  maxLength = maxLength || 60;
+  const maybeEllipsis = s.length > maxLength ? "..." : "";
+  return s.substring(0, maxLength) + maybeEllipsis;
+}
+
+function ellipsifyEvent(event) {
+  return {
+    name: event.name,
+    date: event.date,
+    memo: ellipsify(event.memo),
+  };
 }
 
 // Default behavior
