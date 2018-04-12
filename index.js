@@ -235,7 +235,7 @@ function showHelp() {
   console.log("welcome to friendlog :-)");
   console.log("   add [friend] [interval=10] " + "Adds [friend]. Events expected every [interval] days");
   console.log("   list                       " + "Lists each friend and their next expected event");
-  console.log("   list [friend]              " + "View info about [friend]");
+  console.log("   info [friend]              " + "View info about [friend]");
   console.log("   edit [friend] [interval]   " + "Edits [friend]'s expected [interval]");
   console.log("   hangout [f] [d] [m]        " + "Records event with [friend] on [date] with [memo]");
   console.log("   history [-c]               " + "See history, grouped by friend or [-chronological]");
@@ -285,7 +285,7 @@ function main() {
     addFriend(args[1], args[2]);
   } else if (1 === args.length && "list" === args[0]) {
     listFriends();
-  } else if (2 === args.length && "list" === args[0]) {
+  } else if (2 === args.length && "info" === args[0]) {
     listFriend(args[1]);
   } else if (3 === args.length && "edit" === args[0]) {
     editFriend(args[1], args[2]);
