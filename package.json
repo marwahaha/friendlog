@@ -31,7 +31,14 @@
     "friendlog": "./index.js",
     "fl": "./index.js"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test",
+      "pre-push": "npm test"
+    }
+  },
   "devDependencies": {
-    "eslint": "^4.19.1"
+    "eslint": "^4.19.1",
+    "husky": "^1.0.0-rc.1"
   }
 }
