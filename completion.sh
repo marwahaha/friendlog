@@ -12,7 +12,7 @@ function _fl () {
   elif [ $COMP_CWORD -eq 2 ]; then
     prev=${COMP_WORDS[COMP_CWORD-1]}
     if [[ $args_with_names =~ (^|[[:space:]])"$prev"($|[[:space:]]) ]]; then
-      names=$(/Users/kmarwaha/Desktop/fl/index.js info -n) ## todo, change to fl
+      names=$(fl info -n)
       COMPREPLY=($(compgen -W "$names" -- "$cur"))
     fi
   fi
@@ -26,7 +26,7 @@ function _flh () {
   COMPREPLY=()
   if [ $COMP_CWORD -eq 1 ]; then
     cur=${COMP_WORDS[COMP_CWORD]}
-    names=$(/Users/kmarwaha/Desktop/fl/index.js info -n) ## todo, change to fl
+    names=$(fl info -n)
     COMPREPLY=($(compgen -W "$names" -- "$cur"))
   fi
 
