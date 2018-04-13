@@ -6,6 +6,13 @@
 npm install -g friendlog
 ```
 
+## Tips
+Add a handy alias and autocomplete to your `~/.bash_profile`:
+```
+alias flh="friendlog hangout"
+source fl-completion-setup
+```
+
 ## Basic Usage
 
 ```
@@ -25,7 +32,6 @@ Log a hangout:
 $ fl hangout Alice 2018-01-01 "Got coffee"
 $ flh Kunal 2018-03-19 "Created friendlog"
 ```
-You may like to add `alias flh="friendlog hangout"` to your `~/.bash_profile`.
 
 See who you should hang out with next and when:
 ```
@@ -38,16 +44,18 @@ new         Bob Doe     # no hangouts logged yet
 See history of hangouts:
 ```
 $ fl history
-Alice
------
-2018-01-06  Got coffee
+NAME    DATE        MEMO
+Alice   2018-01-06  Got coffee
+Kunal   2018-03-29  Created friendlog
+```
 
-Kunal
------
-2018-03-29  Created friendlog
-
+See info about friend:
+```
+$ fl info Kunal
+{ name: 'Kunal', interval: 10 }
 ```
 
 ## Contributing
-1. Make sure you lint first `npm run lint`; `npm run lint-fix` will fix many errors!
-2. `npm version [major|minor|patch]` will bump version numbers; `npm publish` will publish package.
+Linting is enforced with pre-commit and pre-push hooks. `npm run lint-fix` will help!
+
+Publish easily: `npm version [major|minor|patch]` will bump version numbers; `npm publish` will publish package.
