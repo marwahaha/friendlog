@@ -236,6 +236,41 @@ function addEvent(friendName, date, memo) {
   console.info("Added event '" + memo + "' on " + isoDate + " with " + friendName);
 }
 
+function addTags(friendName, tags) {
+  var friends = loadFriendsData();
+  var myFriend = getFriendByName(friends, friendName)[0];
+  if (!myFriend) {
+    return ask(
+      "New friend " + friendName + "! Add them to friendlog? [yN]",
+      (answer) => ifYesAddFriend(answer, friendName, () => addTags(friendName, tags))
+    );
+  }
+  myFriend.tags = myFriend.tags || [];
+  var addedTags = _.difference(tags, myFriend.tags);
+  myFriend.tags = myFriend.tags.concat(addedTags);
+  writeFriendsData(friends);
+  console.info("Added " + addedTags.length + " new tags to friend " + friendName
+    + ": [" + addedTags.toString() + "]");
+}
+
+function removeTags(friendName, tags) {
+  var friends = loadFriendsData();
+  var myFriend = getFriendByName(friends, friendName)[0];
+  if (!myFriend) {
+    return ask(
+      "New friend " + friendName + "! Add them to friendlog? [yN]",
+      (answer) => ifYesAddFriend(answer, friendName, () => removeTags(friendName, tags))
+    );
+  }
+  myFriend.tags = myFriend.tags || [];
+  var oldTags = myFriend.tags;
+  myFriend.tags = (argv.a || argv.all) ? [] : _.difference(myFriend.tags, tags);
+  var removedTags = _.difference(oldTags, myFriend.tags);
+  writeFriendsData(friends);
+  console.info("Removed " + removedTags.length + " tags from friend " + friendName
+    + ": [" + removedTags.toString() + "]");
+}
+
 function showHelp() {
   console.log("welcome to friendlog :-)");
   console.log("   add [friend] [interval=10] " + "Adds [friend]. Events expected every [interval] days");
@@ -246,6 +281,8 @@ function showHelp() {
   console.log("   hangout [f] [d] [m]        " + "Records event with [friend] on [date] with [memo]");
   console.log("   history [-c]               " + "See history, grouped by friend or [-chronological]");
   console.log("   history [friend]           " + "See history with specific friend");
+  console.log("   tag [friend] [...tags]     " + "Add any number of [tags] to a friend");
+  console.log("   untag [friend] [...t] [-a] " + "Remove specific [tags] or [-all] tags from a friend");
 }
 
 function showHistory(friendName) {
@@ -287,6 +324,12 @@ function main() {
     showHistory(args[1]);
   } else if (4 === args.length && "hangout" === args[0]) {
     addEvent(args[1], args[2], args[3]);
+  } else if (3 <= args.length && "tag" === args[0]) {
+    addTags(args[1], args.slice(2));
+  } else if (3 <= args.length && "untag" === args[0]) {
+    removeTags(args[1], args.slice(2));
+  } else if (2 === args.length && (argv.a || argv.all)) {
+    removeTags(args[1], args.slice(2));
   } else {
     showHelp();
   }
