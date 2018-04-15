@@ -203,13 +203,18 @@ function editFriend(name, days) {
   console.info("Friend " + name + " now at " + numDays + " days (was " + oldNumDays + ")");
 }
 
-function listFriend(name) {
-  var friends = loadFriendsData();
+function getFriendInfo(name) {
+  var friends = _.sortBy(loadFriendsData(), "name");
+  if (!name) {
+    return (argv.n || argv.names)
+      ? friends.map(f => console.log(f.name))
+      : friends.map(f => console.log(f));
+  }
   var myFriend = getFriendByName(friends, name)[0];
   if (!myFriend) {
     return ask(
       "New friend " + name + "! Add them to friendlog? [yN]",
-      (answer) => ifYesAddFriend(answer, name, () => listFriend(name))
+      (answer) => ifYesAddFriend(answer, name, () => getFriendInfo(name))
     );
   }
   console.log(myFriend);
@@ -235,6 +240,7 @@ function showHelp() {
   console.log("welcome to friendlog :-)");
   console.log("   add [friend] [interval=10] " + "Adds [friend]. Events expected every [interval] days");
   console.log("   list                       " + "Lists each friend and their next expected event");
+  console.log("   info [-n]                  " + "View info or just [-names] of each friend");
   console.log("   info [friend]              " + "View info about [friend]");
   console.log("   edit [friend] [interval]   " + "Edits [friend]'s expected [interval]");
   console.log("   hangout [f] [d] [m]        " + "Records event with [friend] on [date] with [memo]");
@@ -285,8 +291,10 @@ function main() {
     addFriend(args[1], args[2]);
   } else if (1 === args.length && "list" === args[0]) {
     listFriends();
+  } else if (1 === args.length && "info" === args[0]) {
+    getFriendInfo();
   } else if (2 === args.length && "info" === args[0]) {
-    listFriend(args[1]);
+    getFriendInfo(args[1]);
   } else if (3 === args.length && "edit" === args[0]) {
     editFriend(args[1], args[2]);
   } else if (1 === args.length && "history" === args[0]) {
