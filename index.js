@@ -250,31 +250,15 @@ function showHelp() {
 
 function showHistory(friendName) {
   var events = loadEventsData();
-  if (!friendName && (argv.c || argv.chronological)) {
-    return console.log(columnify(_.sortBy(events, "date").reverse()));
-  }
-  var eventsByFriend = _.groupBy(events, "name");
   if (friendName) {
-    return prettyPrintFriend(friendName, eventsByFriend);
+    events = _.filter(events, e => e.name === friendName);
   }
-  Object.keys(eventsByFriend).sort().forEach(friend => prettyPrintFriend(friend, eventsByFriend));
-
-}
-
-// Printing helpers
-function prettyPrintFriend(friend, eventsByFriend) {
-  prettyPrintFriendHeader(friend);
-  _.sortBy(eventsByFriend[friend], "date").reverse().map(prettyPrintEvent);
-  console.log();
-}
-
-function prettyPrintFriendHeader(friend) {
-  console.log(friend);
-  console.log("-".repeat(friend.length));
-}
-
-function prettyPrintEvent(event) {
-  console.log(event.date + "  " + event.memo);
+  if (argv.c || argv.chronological) {
+    events = _.orderBy(events, ["date", "memo", "name"], ["desc", "asc", "asc"]);
+  } else {
+    events = _.orderBy(events, ["name", "date", "memo"], ["asc", "desc", "asc"]);
+  }
+  return console.log(columnify(events));
 }
 
 // Default behavior
