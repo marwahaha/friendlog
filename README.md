@@ -54,6 +54,17 @@ See info about friend:
 $ fl info Kunal
 { name: 'Kunal', interval: 10 }
 ```
+Add and remove tags to friends:
+```
+$ fl tag Kunal running music
+Added 2 new tags to friend Kunal: [running,music]
+$ fl info Kunal
+{ name: 'Kunal', interval: 10, tags: [ 'running', 'music' ] }
+$ fl untag Kunal running
+Removed 1 tags from friend Kunal: [running]
+$ fl info Kunal
+{ name: 'Kunal', interval: 10, tags: [ 'music' ] }
+```
 
 ## Contributing
 Linting is enforced with pre-commit and pre-push hooks. `npm run lint-fix` will help!

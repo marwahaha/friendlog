@@ -4,8 +4,8 @@ function _fl () {
   local args
   local args_with_names
   COMPREPLY=()
-  args="add list info edit history hangout help"
-  args_with_names="info edit history hangout"
+  args="add list info edit history hangout help tag untag"
+  args_with_names="info edit history hangout tag untag"
   cur=${COMP_WORDS[COMP_CWORD]}
   if [ $COMP_CWORD -eq 1 ]; then
     COMPREPLY=($(compgen -W "$args" -- "$cur"))
