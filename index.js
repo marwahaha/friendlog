@@ -246,6 +246,7 @@ function showHelp() {
   console.log("   hangout [f] [d] [m]        " + "Records event with [friend] on [date] with [memo]");
   console.log("   history [-c]               " + "See history, grouped by friend or [-chronological]");
   console.log("   history [friend]           " + "See history with specific friend");
+  console.log("   shortcuts                  " + "Print tab-completion and flh='fl hangout' shortcut");
 }
 
 function showHistory(friendName) {
@@ -259,6 +260,13 @@ function showHistory(friendName) {
     events = _.orderBy(events, ["name", "date", "memo"], ["asc", "desc", "asc"]);
   }
   return console.log(columnify(events));
+}
+
+function printShortcuts() {
+  console.log("## start friendlog shortcuts");
+  console.log("alias flh=\"friendlog hangout\"");
+  console.log("source fl-completion-setup");
+  console.log("## end friendlog shortcuts");
 }
 
 // Default behavior
@@ -287,6 +295,8 @@ function main() {
     showHistory(args[1]);
   } else if (4 === args.length && "hangout" === args[0]) {
     addEvent(args[1], args[2], args[3]);
+  } else if (1 === args.length && "shortcuts" === args[0]) {
+    printShortcuts();
   } else {
     showHelp();
   }
