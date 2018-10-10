@@ -6,11 +6,11 @@
 npm install -g friendlog
 ```
 
-## Tips
-Add a handy alias and autocomplete to your `~/.bash_profile`:
+## Shortcuts
+
+Add tab-completion and the shortcut `flh` for `fl hangout`!
 ```
-alias flh="friendlog hangout"
-source fl-completion-setup
+fl shortcuts >> ~/.bash_profile && source ~/.bash_profile
 ```
 
 ## Basic Usage
