@@ -55,6 +55,23 @@ $ fl info Kunal
 { name: 'Kunal', interval: 10 }
 ```
 
+## FAQ
+> Where is my data stored?
+
+All data is stored on your own computer.
+
+> What qualifies as a "hangout"? 
+
+You can use any criteria you like. I recommend focusing on *interaction with intent*. You saw and respected the person as another person on Earth and grew together in some small way.
+
+> Can you add yourself?
+
+I (Kunal) have started to do this, logging when I do something alone and self-fulfilling (a long run, time with a good book, a fancy meal for one...) This reminds me to "hangout" with myself, too.
+
+> I didn't understand this page but I want to try it out!
+
+Email me at `marwahaha@berkeley.edu`.
+
 ## Contributing
 Linting is enforced with pre-commit and pre-push hooks. `npm run lint-fix` will help!
 
