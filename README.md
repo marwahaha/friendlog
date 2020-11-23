@@ -1,6 +1,8 @@
+`friendlog` is a simple tool to journal about the time you spend with the people you care about. I hope you enjoy!
+
 ## Setup
 
-[Install Node](https://nodejs.org/en/download/package-manager/) (if you haven't before)
+[Install Node](https://nodejs.org/en/download/package-manager/) (if you haven't before). Then:
 
 ```
 npm install -g friendlog
