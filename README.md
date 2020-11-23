@@ -60,7 +60,7 @@ $ fl info Kunal
 
 All data is stored on your own computer.
 
-> What qualifies as a "hangout"? 
+> What qualifies as a "hangout"?
 
 You can use any criteria you like. I recommend focusing on *interaction with intent*. You saw and respected the person as another person on Earth and grew together in some small way.
 
@@ -71,6 +71,14 @@ I (Kunal) have started to do this, logging when I do something alone and self-fu
 > I didn't understand this page but I want to try it out!
 
 Email me at `marwahaha@berkeley.edu`.
+
+> How can I visualize the data?
+
+You can try using `jq` (available for [download here](https://stedolan.github.io/jq/download/)). Here's a command I like to see friends grouped by time interval:
+
+```
+jq '.|=group_by(.interval)|map({interval:.[0].interval, names:map(.name)})' < ~/.friendlog/friends.json
+```
 
 ## Contributing
 Linting is enforced with pre-commit and pre-push hooks. `npm run lint-fix` will help!
