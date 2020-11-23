@@ -1,6 +1,8 @@
+# friendlog
+
 ## Setup
 
-[Install Node](https://nodejs.org/en/download/package-manager/) (if you haven't before)
+[Install Node](https://nodejs.org/en/download/package-manager/) (if you haven't before). Then:
 
 ```
 npm install -g friendlog
